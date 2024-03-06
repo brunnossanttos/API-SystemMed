@@ -1,14 +1,12 @@
-import { Request, Response } from "express";
-import { CreatePatientUseCase } from "src/aplication/patients/createPatient.UseCase";
-import { ListPatientsUseCase } from "src/aplication/patients/listPatient.UseCase";
-import { IPatient } from "src/domain/interface/patient/IPatient";
-import { PatientsRepositoryInMemory } from "src/test/repositoriesInMemory.ts/patientsRepositoryInMemory";
+import { Request, Response } from 'express';
+import { CreatePatientUseCase } from 'src/aplication/patients/createPatient.UseCase';
+import { ListPatientsUseCase } from 'src/aplication/patients/listPatient.UseCase';
+import { IPatient } from 'src/domain/interface/patient/IPatient';
+import { PatientRepository } from 'src/infra/repositories/patientRepository';
 
-const patientsRepositoryInMemory = new PatientsRepositoryInMemory();
-const listPatientsUseCase = new ListPatientsUseCase(patientsRepositoryInMemory);
-const createPacienteUseCase = new CreatePatientUseCase(
-  patientsRepositoryInMemory
-);
+const patientsRepository = new PatientRepository();
+const listPatientsUseCase = new ListPatientsUseCase(patientsRepository);
+const createPacienteUseCase = new CreatePatientUseCase(patientsRepository);
 
 export const PatientsController = {
   list: async (req: Request, res: Response) => {
@@ -18,11 +16,11 @@ export const PatientsController = {
   },
 
   create: async (req: Request, res: Response) => {
-    const { name, age, city }: IPatient = req.body;
+    const { name, email, password, age, city }: IPatient = req.body;
 
     const result = await createPacienteUseCase.execute(
-      { name, age, city },
-      "API Node"
+      { name, email, password, age, city },
+      'API Node',
     );
 
     res.status(201).json(result);

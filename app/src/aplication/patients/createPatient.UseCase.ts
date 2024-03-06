@@ -1,5 +1,5 @@
-import { IPatient } from "src/domain/interface/patient/IPatient";
-import { IPacientRepository } from "src/domain/interface/patient/IPatientRepository";
+import { IPatient } from 'src/domain/interface/patient/IPatient';
+import { IPacientRepository } from 'src/domain/interface/patient/IPatientRepository';
 
 interface IResponseCreatepatient {
   patient: IPatient;
@@ -12,16 +12,16 @@ export class CreatePatientUseCase {
   }
 
   async execute(
-    { name, age, city }: IPatient,
-    createSystem: string
+    { name, email, password, age, city }: IPatient,
+    createSystem: string,
   ): Promise<IResponseCreatepatient> {
     const newPatient: IPatient = {
       name,
+      email,
+      password,
       age,
       city: city ?? undefined,
     };
-
-    console.log(newPatient);
 
     const registeredPatient = await this.patientRepository.create(newPatient);
 
