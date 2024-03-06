@@ -1,5 +1,5 @@
-import { IHospital } from "src/domain/interface/hospital/IHospital";
-import { IHospitalRepository } from "src/domain/interface/hospital/IHospitalRepository";
+import { IHospital } from 'src/domain/interface/hospital/IHospital';
+import { IHospitalRepository } from 'src/domain/interface/hospital/IHospitalRepository';
 
 interface IResponseCreateHospital {
   hospital: IHospital;
@@ -12,11 +12,13 @@ export class CreateHospitalUseCase {
   }
 
   async execute(
-    { name, cnpj, city }: IHospital,
-    createSystem: string
+    { name, email, password, cnpj, city }: IHospital,
+    createSystem: string,
   ): Promise<IResponseCreateHospital> {
     const newHospital: IHospital = {
       name,
+      email,
+      password,
       cnpj,
       city: city ?? undefined,
     };

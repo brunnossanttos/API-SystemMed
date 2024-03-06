@@ -1,15 +1,11 @@
-import { Request, Response } from "express";
-import { CreateHospitalUseCase } from "src/aplication/hospitals/createHospital.UseCase";
-import { ListHospitalsUseCase } from "src/aplication/hospitals/listHospitals.UseCase";
-import { HospitalsRepositoryInMemory } from "src/test/repositoriesInMemory.ts/hospitalsRepositoryInMemory";
+import { Request, Response } from 'express';
+import { CreateHospitalUseCase } from 'src/aplication/hospitals/createHospital.UseCase';
+import { ListHospitalsUseCase } from 'src/aplication/hospitals/listHospitals.UseCase';
+import { HospitalRepository } from 'src/infra/repositories/hospitalRepository';
 
-const hospitalsRepositoryInMemory = new HospitalsRepositoryInMemory();
-const listHospitalUseCase = new ListHospitalsUseCase(
-  hospitalsRepositoryInMemory
-);
-const createHospitalUseCase = new CreateHospitalUseCase(
-  hospitalsRepositoryInMemory
-);
+const hospitalsRepository = new HospitalRepository();
+const listHospitalUseCase = new ListHospitalsUseCase(hospitalsRepository);
+const createHospitalUseCase = new CreateHospitalUseCase(hospitalsRepository);
 
 export const HospitalsController = {
   list: async (req: Request, res: Response) => {
@@ -19,15 +15,15 @@ export const HospitalsController = {
   },
 
   create: async (req: Request, res: Response) => {
-    const { name, cnpj, city } = req.body;
+    const { name, email, password, cnpj, city } = req.body;
 
     const result = await createHospitalUseCase.execute(
-      { name, cnpj, city },
-      "API Node"
+      { name, email, password, cnpj, city },
+      'API Node',
     );
 
     res.status(201).json(result);
 
-    return "cadastro de hospitais!";
+    return 'cadastro de hospitais!';
   },
 };
