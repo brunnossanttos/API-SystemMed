@@ -1,15 +1,19 @@
 import { IPatientRepository } from 'src/domain/interface/patient/IPatientRepository';
 
-export class ListPatientsUseCase {
+export class ShowPatientUseCase {
   private patientRepository: IPatientRepository;
 
   constructor(patientsRepository: IPatientRepository) {
     this.patientRepository = patientsRepository;
   }
 
-  async execute() {
-    const patients = await this.patientRepository.listAll();
+  async execute(patientId: string) {
+    const patient = await this.patientRepository.findById(patientId);
 
-    return patients;
+    if (!patient) {
+      throw new Error('Patient not found');
+    }
+
+    return patient;
   }
 }

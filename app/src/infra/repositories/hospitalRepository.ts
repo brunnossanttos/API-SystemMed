@@ -9,11 +9,21 @@ export class HospitalRepository implements IHospitalRepository {
     return hospitals;
   }
 
+  async findById(id: string): Promise<IHospital | undefined> {
+    const hospital = await HospitalModel.findById(id);
+
+    return hospital;
+  }
+
   async create(hospital: IHospital): Promise<IHospital> {
     const newHospital = new HospitalModel(hospital);
 
     newHospital.save();
 
     return newHospital;
+  }
+
+  async delete(id: string): Promise<void> {
+    await HospitalModel.findByIdAndDelete(id);
   }
 }
